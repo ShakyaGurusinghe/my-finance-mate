@@ -1,1 +1,1 @@
-# my-finance-mate
+# horizon-homes
