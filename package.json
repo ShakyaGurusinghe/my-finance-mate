@@ -1,7 +1,7 @@
 {
-  "name": "horizon-homes",
+  "name": "my-finance-mate",
   "version": "1.0.0",
-  "description": "A real estate management application for Horizon Homes.",
+  "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -10,20 +10,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NisalMallawaarachchi/horizon-homes.git"
+    "url": "git+https://github.com/NisalMallawaarachchi/my-finance-mate.git"
   },
   "keywords": [
-    "real estate",
-    "homes",
-    "property management",
+    "budget tracking",
+    "income",
+    "expense",
+    "income management",
+    "expense management",
     "app"
   ],
   "author": "Nisal Mallawaarachchi",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/NisalMallawaarachchi/horizon-homes/issues"
+    "url": "https://github.com/NisalMallawaarachchi/my-finance-mate/issues"
   },
-  "homepage": "https://github.com/NisalMallawaarachchi/horizon-homes#readme",
+  "homepage": "https://github.com/NisalMallawaarachchi/my-finance-mate#readme",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
