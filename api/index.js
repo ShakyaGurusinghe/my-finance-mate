@@ -9,6 +9,7 @@ import authRouter from "./routes/auth.route.js";
 dotenv.config(); // Load environment variables early
 connectDB();
 
+// Creates the express app
 const app = express();
 
 // Middleware
@@ -23,7 +24,7 @@ const loginLimiter = rateLimit({
 });
 
 // Routes
-app.use("/api/auth", authRouter);
+app.use("/api/auth", loginLimiter, authRouter);
 app.use("/api/user", userRouter);
 
 // Handle unknown routes
