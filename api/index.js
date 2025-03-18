@@ -24,7 +24,7 @@ const loginLimiter = rateLimit({
 });
 
 // Routes (handles client requests and sends responses)
-app.use("/api/auth", loginLimiter, authRouter);
+app.use("/api/auth", loginLimiter,  authRouter);
 app.use("/api/user", userRouter);
 
 // Handle unknown routes
