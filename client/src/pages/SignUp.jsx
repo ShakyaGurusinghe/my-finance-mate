@@ -4,6 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AuthLayout from "./AuthLayout";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -194,6 +195,7 @@ export default function SignUp() {
           </Link>
         </p>
       </div>
+      <AuthLayout/>
     </div>
   );
 }
