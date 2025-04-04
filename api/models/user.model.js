@@ -14,7 +14,11 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    avatar: {
+        type: String,
+        default: "https://i.postimg.cc/Y0JPMM7V/image.png", // Default avatar URL
+    },
 }, 
 { timestamps: true } // Automatically adds createdAt & updatedAt
 );

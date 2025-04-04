@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth"; // Adjust the path based on your project structure
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthLayout from "./AuthLayout";
@@ -88,10 +88,6 @@ export default function SignUp() {
     }
   };
 
-  const handleGoogleSignIn = () => {
-    console.log("Google Sign-In Clicked!");
-  };
-
   return (
     <AuthLayout>
       <div className="flex items-center justify-center min-h-screen p-4">
@@ -175,14 +171,7 @@ export default function SignUp() {
             <div className="flex-grow border-t border-gray-300"></div>
           </div>
 
-          {/* Continue with Google */}
-          <button
-            onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center border border-gray-300 py-2 rounded-lg text-gray-700 font-semibold hover:bg-gray-100 transition duration-300"
-          >
-            <FcGoogle className="text-2xl mr-3" />
-            Continue with Google
-          </button>
+          <OAuth />
 
           {/* Already have an account? */}
           <p className="text-center text-gray-600 mt-4">

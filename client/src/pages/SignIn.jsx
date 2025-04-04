@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,7 +9,8 @@ import {
   signInStart,
   signInSuccess,
   signInFailure,
-} from "../redux/User/userSlice";
+} from "../redux/user/userSlice";
+import OAuth from "../components/OAuth";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
@@ -74,10 +74,6 @@ export default function SignIn() {
       dispatch(signInFailure(err.message)); // Dispatch failure action with error message
       toast.error(err.message);
     }
-  };
-
-  const handleGoogleSignIn = () => {
-    console.log("Google Sign-In Clicked!");
   };
 
   return (
@@ -149,14 +145,7 @@ export default function SignIn() {
             <div className="flex-grow border-t border-gray-300"></div>
           </div>
 
-          {/* Continue with Google */}
-          <button
-            onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center border border-gray-300 py-2 rounded-lg text-gray-700 font-semibold hover:bg-gray-100 transition duration-300"
-          >
-            <FcGoogle className="text-2xl mr-3" />
-            Continue with Google
-          </button>
+          <OAuth />
 
           {/* Don't have an account? */}
           <p className="text-center text-gray-600 mt-4">

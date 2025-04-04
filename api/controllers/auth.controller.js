@@ -71,3 +71,79 @@ export const signin = async (req, res, next) => {
     next(error);
   }
 };
+
+export const googleAuth = async (req, res, next) => {
+  const { name, email, photo } = req.body;
+
+  try {
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      // Generate JWT token
+      const token = jwt.sign(
+        { _id: existingUser._id },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1h",
+        }
+      );
+
+      // Set HTTP-only cookie with token
+      res.cookie("access_token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 60 * 60 * 1000, // 1 hour
+      });
+
+      // Return the user with avatar field
+      const { password: pass, ...userWithoutPassword } = existingUser._doc;
+      return res.status(200).json({
+        token,
+        user: {
+          ...userWithoutPassword,
+          avatar: photo, // Ensure avatar is included
+        },
+      });
+    }
+
+    // Generate a secure password for new Google user
+    const generatedPassword = generatePassword();
+    const hashedPassword = await bcrypt.hash(generatedPassword, 12);
+
+    // Create a new user with Google data
+    const newUser = new User({
+      username: name.toLowerCase().replace(/\s+/g, ""), // Convert name to lowercase without spaces
+      email,
+      password: hashedPassword,
+      avatar: photo,
+    });
+
+    await newUser.save();
+
+    // Generate JWT token for new user
+    const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    // Set HTTP-only cookie with token
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 60 * 60 * 1000, // 1 hour
+    });
+
+    // Return the new user with avatar field
+    const { password: pass, ...userWithoutPassword } = newUser._doc;
+    res.status(201).json({
+      token,
+      user: {
+        ...userWithoutPassword,
+        avatar: photo, // Ensure avatar is included
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
