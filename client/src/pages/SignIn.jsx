@@ -5,16 +5,24 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthLayout from "./AuthLayout";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux/User/userSlice";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const { loading } = useSelector((state) => state.user);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -42,7 +50,7 @@ export default function SignIn() {
 
     if (!validateForm()) return;
 
-    setLoading(true);
+    dispatch(signInStart());
 
     try {
       const res = await fetch("/api/auth/signin", {
@@ -58,27 +66,13 @@ export default function SignIn() {
         throw new Error(errorData.message || "Invalid email or password.");
       }
 
-      toast.success("Sign-in successful!", {
-        position: "top-center",
-      });
-
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 2000);
-    } catch (error) {
-      console.error("Error:", error.message);
-
-      let userFriendlyMessage = error.message;
-      if (error.message.includes("Failed to fetch")) {
-        userFriendlyMessage = "Network error. Please check your connection.";
-      } else if (error.message.includes("Invalid email or password")) {
-        userFriendlyMessage = "The email or password you entered is incorrect.";
-      }
-
-      setError(userFriendlyMessage);
-      toast.error(userFriendlyMessage, { position: "top-center" });
-    } finally {
-      setLoading(false);
+      const data = await res.json();
+      dispatch(signInSuccess(data)); // Dispatch success action with user data
+      toast.success("Sign-in successful!");
+      setTimeout(() => navigate("/dahboard"), 2000); // Redirect to home page after success
+    } catch (err) {
+      dispatch(signInFailure(err.message)); // Dispatch failure action with error message
+      toast.error(err.message);
     }
   };
 
@@ -89,7 +83,7 @@ export default function SignIn() {
   return (
     <AuthLayout>
       <div className="flex items-center justify-center min-h-screen p-4">
-        <ToastContainer />
+        <ToastContainer position="top-center" />
         <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
             Sign In
